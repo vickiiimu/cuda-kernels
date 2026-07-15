@@ -1,0 +1,22 @@
+# Compiled executables
+*.out
+*.exe
+
+# Object files
+*.o
+*.obj
+
+# CUDA build artifacts
+*.cubin
+*.fatbin
+*.ptx
+
+# Profiling output
+*.nsys-rep
+*.ncu-rep
+
+# macOS
+.DS_Store
+
+# Editor settings
+.vscode/
