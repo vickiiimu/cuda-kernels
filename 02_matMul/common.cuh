@@ -17,6 +17,15 @@
         } \
     } while(0)
 
+#define CUBLAS_CHECK(call) \
+    do { \
+        cublasStatus_t status = call; \
+        if (status != CUBLAS_STATUS_SUCCESS) { \
+            printf("Error: %d in %s at line %d\n", status, __FILE__, __LINE__); \
+            exit(EXIT_FAILURE); \
+        } \
+    } while(0)
+
 //---------- Verification ----------
 bool verifyMatMul(const float *C, const float *C_ref, int M, int N, float tol = 1e-4f) {
     for (int i = 0; i < M * N; i++) {
