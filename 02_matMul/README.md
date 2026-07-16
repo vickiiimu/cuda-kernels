@@ -6,7 +6,7 @@ step against cuBLAS — second step in building toward custom
 kernels for training nanoGPT from scratch.
 
 ## Files
-- `common.cuh` — shared CUDA_CHECK macro, benchmark harness, verification
+- `common.cuh` — shared CUDA_CHECK macro, CUBLAS_CHECK macro, benchmark harness, verification
 - `00_cublas_reference.cu` — cuBLAS baseline, the ground truth to compare against
 - `01_naive.cu` — one thread per output element, no optimization
 - `02_global_mem_coalescing.cu` — reorder thread indexing for coalesced access
