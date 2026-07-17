@@ -19,17 +19,23 @@ custom kernels for training nanoGPT from scratch.
   CUDA events, reports achieved bandwidth (GB/s) and compute throughput (GFLOPS)
 
 ## Benchmark results
-Run on: [GPU name, e.g. "A100, Engaging cluster"]
-n = 1,048,576 elements
+Run on: NVIDIA L40S
 
-    Avg kernel time: ___ ms
-    Achieved bandwidth: ___ GB/s
-    Achieved compute: ___ GFLOPS
-    Arithmetic intensity: 0.083 FLOPs/byte
+n = 1,073,741,824 elements
+
+    Avg kernel time: 18.403294 ms
+    Achieved bandwidth: 700.141081 GB/s
+    Achieved compute: 58.345090 GFLOPS
+    Arithmetic intensity: 0.083333 FLOPs/byte
 
 Vec_add is memory-bound (low arithmetic intensity), so bandwidth vs.
 GPU peak is the meaningful metric here, not GFLOPS.
 
 ## Peak bandwidth for reference
-[GPU name] theoretical peak: ___ GB/s
-Achieved: ___% of peak
+NVIDIA L40S theoretical peak: 864 GB/s
+
+Achieved: ~81% of peak
+
+Note: A smaller benchmark with n = 1,048,576 reported 2270 GB/s effective
+bandwidth, but Nsight Compute showed a 99.9% L2 hit rate, meaning that result
+measured warm-cache performance rather than sustained DRAM bandwidth.
