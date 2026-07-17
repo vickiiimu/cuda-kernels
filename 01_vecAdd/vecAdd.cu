@@ -110,7 +110,7 @@ void vecAddBenchmark(const float *h_A, const float *h_B, float *h_C, int n){
 }
 
 int main() {
-    int n = 1 << 20;
+    int n = 1 << 30;
     size_t size = n * sizeof(float);
 
     float *h_A = (float*)malloc(size);
