@@ -13,8 +13,8 @@ void cublasMatMul(cublasHandle_t handle, const float *d_A, const float *d_B, flo
         d_A, CUDA_R_32F, K,
         &beta,
         d_C, CUDA_R_32F, N,
-        CUBLAS_COMPUTE_32F_FAST_TF32,
-        CUBLAS_GEMM_DEFAULT_TENSOR_OP
+        CUBLAS_COMPUTE_32F,
+        CUBLAS_GEMM_DEFAULT
     ));
 }
 
