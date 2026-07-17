@@ -1,7 +1,7 @@
 #include "common.cuh"
 #include <cublas_v2.h>
 
-void cublasMatmul(cublasHandle_t handle, const float *d_A, const float *d_B, float *d_C, int M, int N, int K) {
+void cublasMatMul(cublasHandle_t handle, const float *d_A, const float *d_B, float *d_C, int M, int N, int K) {
     float alpha = 1.0f;
     float beta = 0.0f;
 
@@ -20,7 +20,7 @@ int main() {
     CUBLAS_CHECK(cublasCreate(&handle));
 
     runSmallMatMulCheck([&](const float *d_A, const float *d_B, float *d_C, int M, int N, int K){
-        cublasMatmul(handle, d_A, d_B, d_C, M, N, K);
+        cublasMatMul(handle, d_A, d_B, d_C, M, N, K);
     });
 
     int M = 4096, N = 4096, K = 4096;
@@ -32,10 +32,11 @@ int main() {
     float *h_B = (float*)malloc(sizeB);
     float *h_C = (float*)malloc(sizeC);
 
-    for (size_t i = 0; i < M * K; i++) h_A[i] = 1.0f;
-    for (size_t i = 0; i < K * N; i++) h_B[i] = 1.0f;
+    for (size_t i = 0; i < (size_t)M * K; ++i) h_A[i] = 1.0f;
+    for (size_t i = 0; i < (size_t)K * N; ++i) h_B[i] = 1.0f;
 
     float *d_A, *d_B, *d_C;
+
     CUDA_CHECK(cudaMalloc((void**)&d_A, sizeA));
     CUDA_CHECK(cudaMalloc((void**)&d_B, sizeB));
     CUDA_CHECK(cudaMalloc((void**)&d_C, sizeC));
@@ -45,22 +46,22 @@ int main() {
 
     int iterations = 20;
     float avgMs = benchmarkKernel([&]() {
-        cublasMatmul(handle, d_A, d_B, d_C, M, N, K);
+        cublasMatMul(handle, d_A, d_B, d_C, M, N, K);
     }, iterations);
 
     CUDA_CHECK(cudaMemcpy(h_C, d_C, sizeC, cudaMemcpyDeviceToHost));
 
-    // theoretical min of bytes moved
-    size_t bytesMoved = ((size_t)M * K + (size_t)K * N + (size_t)M * N) * sizeof(float);
-    printMatMulMetrics(M, N, K, avgMs, iterations, bytesMoved, "00_cublas_reference");
-
     // Sanity check: with A and B filled entirely with 1.0f, every
     // output element should equal K (sum of K products of 1*1)
     float *h_C_expected = (float*)malloc(sizeC);
-    for (size_t i = 0; i < M * N; i++) h_C_expected[i] = (float)K;
+    for (size_t i = 0; i < (size_t)M * N; ++i) h_C_expected[i] = (float)K;
 
     bool correct = verifyMatMul(h_C, h_C_expected, M, N);
     printf(correct ? "Sanity check passed.\n" : "Sanity check FAILED.\n");
+
+    // theoretical min of bytes moved
+    size_t bytesMoved = ((size_t)M * K + (size_t)K * N + (size_t)M * N) * sizeof(float);
+    printMatMulMetrics(M, N, K, avgMs, iterations, bytesMoved, "00_cublas_reference");
 
     free(h_C_expected);
 
