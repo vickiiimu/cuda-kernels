@@ -35,21 +35,21 @@ kernels for training nanoGPT from scratch.
   benchmarked independently and identically
 
 ## Benchmark results
-Run on: [GPU name, e.g. "A100, Engaging cluster"]
+Run on: NVIDIA L40S
 Matrix size: M = N = K = 4096
 Iterations: 20 (+ 1 discarded warm-up run)
 
-    00 cuBLAS reference:        1.089935 ms   126098.350351 GFLOPS   100% (baseline)
-    01 naive:                   ___ ms   ___ GFLOPS   ___% of cuBLAS
-    02 global mem coalescing:   ___ ms   ___ GFLOPS   ___% of cuBLAS
-    03 shared mem blocking:     ___ ms   ___ GFLOPS   ___% of cuBLAS
-    04 1D blocktiling:          ___ ms   ___ GFLOPS   ___% of cuBLAS
-    05 2D blocktiling:          ___ ms   ___ GFLOPS   ___% of cuBLAS
-    06 vectorized mem access:   ___ ms   ___ GFLOPS   ___% of cuBLAS
-    07 warptiling:              ___ ms   ___ GFLOPS   ___% of cuBLAS
+    00 cuBLAS reference:        2.767 ms   49.676 TFLOPS   100.0% (baseline)
+    01 naive:                   24.748 ms   5.554 TFLOPS   11.2% of cuBLAS
+    02 global mem coalescing:   ___ ms   ___ TFLOPS   ___% of cuBLAS
+    03 shared mem blocking:     ___ ms   ___ TFLOPS   ___% of cuBLAS
+    04 1D blocktiling:          ___ ms   ___ TFLOPS   ___% of cuBLAS
+    05 2D blocktiling:          ___ ms   ___ TFLOPS   ___% of cuBLAS
+    06 vectorized mem access:   ___ ms   ___ TFLOPS   ___% of cuBLAS
+    07 warptiling:              ___ ms   ___ TFLOPS   ___% of cuBLAS
 
 Matmul is compute-bound (high arithmetic intensity, grows with matrix
-size), so GFLOPS vs. cuBLAS is the meaningful metric here, not bandwidth.
+size), so TFLOPS vs. cuBLAS is the meaningful metric here, not bandwidth.
 
 ## Peak compute for reference
 | Precision | Dense Performance | With Sparsity |
@@ -60,4 +60,4 @@ size), so GFLOPS vs. cuBLAS is the meaningful metric here, not bandwidth.
 | TF32 Tensor Core | 183 TFLOPS | 366 TFLOPS |
 | FP32 (CUDA & Tensor Core) | 91.6 TFLOPS | — |
 
-cuBLAS achieved: ~69~% of theoretical peak (TF32 Tensor Core)
+cuBLAS achieved: ~54~% of theoretical peak (FP32)
