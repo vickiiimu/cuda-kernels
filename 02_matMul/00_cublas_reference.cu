@@ -5,14 +5,17 @@ void cublasMatMul(cublasHandle_t handle, const float *d_A, const float *d_B, flo
     float alpha = 1.0f;
     float beta = 0.0f;
 
-    CUBLAS_CHECK(cublasSgemm(handle,
-    CUBLAS_OP_N, CUBLAS_OP_N,
-    N, M, K,
-    &alpha,
-    d_B, N,
-    d_A, K,
-    &beta,
-    d_C, N));
+    CUBLAS_CHECK(cublasGemmEx(handle,
+        CUBLAS_OP_N, CUBLAS_OP_N,
+        N, M, K,
+        &alpha,
+        d_B, CUDA_R_32F, N,
+        d_A, CUDA_R_32F, K,
+        &beta,
+        d_C, CUDA_R_32F, N,
+        CUBLAS_COMPUTE_32F_FAST_TF32,
+        CUBLAS_GEMM_DEFAULT_TENSOR_OP
+    ));
 }
 
 int main() {
