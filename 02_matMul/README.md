@@ -8,13 +8,12 @@ kernels for training nanoGPT from scratch.
 ## Files
 - `common.cuh` — shared CUDA_CHECK macro, CUBLAS_CHECK macro, benchmark harness, verification
 - `00_cublas_reference.cu` — cuBLAS baseline, the ground truth to compare against
-- `01_naive.cu` — one thread per output element, no optimization
-- `02_global_mem_coalescing.cu` — reorder thread indexing for coalesced access
-- `03_shared_mem_blocking.cu` — tile into shared memory
-- `04_1d_blocktiling.cu` — each thread computes multiple outputs
-- `05_2d_blocktiling.cu` — 2D register tiling
-- `06_vectorized_mem_access.cu` — float4 loads/stores
-- `07_warptiling.cu` — warp-level tiling
+- `01_naive.cu` — one thread per output element, naturally coalesced
+- `02_shared_mem_blocking.cu` — tile into shared memory
+- `03_1d_blocktiling.cu` — each thread computes multiple outputs
+- `04_2d_blocktiling.cu` — 2D register tiling
+- `05_vectorized_mem_access.cu` — float4 loads/stores
+- `06_warptiling.cu` — warp-level tiling
 
 ## Build
     nvcc -arch=sm_89 -O3 01_naive.cu -o 01_naive -lcublas
