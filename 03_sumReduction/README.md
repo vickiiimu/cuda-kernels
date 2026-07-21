@@ -11,7 +11,8 @@ kernels for training nanoGPT from scratch.
 * `01_basic_reduction.cu` — basic parallel sum reduction
 * `02_convergent_sum.cu` — reorganize threads to minimize control divergence
 * `03_shared_memory_reduction.cu` — perform the reduction using shared memory
-* `04_thread_coarsening.cu` — each thread sums multiple input elements
+* `04_segmented_reduction.cu` — use multiple blocks of threads
+* `05_thread_coarsening.cu` — each thread sums multiple input elements
 
 ## Build
 
