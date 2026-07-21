@@ -6,10 +6,10 @@ __global__ void SharedMemoryReductionKernel(float* input, float* output){
     input_s[i] = input[i] + input[i + blockDim.x];
     
     for (unsigned int stride = blockDim.x/2; stride >=1; stride /= 2){
+        __syncthreads();
         if (threadIdx.x < stride){
             input[i] += input[i + stride];
         }
-        __syncthreads();
     }
     if (threadIdx.x == 0){
         *output = input[0];
